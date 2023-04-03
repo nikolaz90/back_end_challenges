@@ -1,7 +1,7 @@
 module Transaction
   class CommissionTransaction
     def initialize(attributes = {})
-      calculator = Calculator::CommissionCalculator
+      calculator = Calculator::DrivyCalculator.new
       @owner_fee = calculator.owner_fee(attributes[:price])
       @insurance_fee = calculator.insurance_fee(attributes[:price])
       @assistance_fee = calculator.assistance_fee(attributes[:period])
@@ -11,7 +11,7 @@ module Transaction
 
     def self.create(attributes = {})
       hash_of_fees = new(attributes).hashify_self
-      Calculator::OptionPriceCalculator.calculate_and_add_price_of_options(
+      Calculator::DrivyCalculator.new.calculate_and_add_price_of_options(
         attributes[:period],
         attributes[:options],
         hash_of_fees

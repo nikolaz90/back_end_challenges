@@ -1,6 +1,6 @@
 module Calculator
-  class OptionPriceCalculator
-    def self.calculate_and_add_price_of_options(period, options, hash_of_fees)
+  module OptionPrices
+    def calculate_and_add_price_of_options(period, options, hash_of_fees)
       beneficiaries = { gps: :owner, baby_seat: :owner, additional_insurance: :drivy }
       options.each do |item|
         price_of_option = period * Fleet::CAR_OPTIONS[item.to_sym]

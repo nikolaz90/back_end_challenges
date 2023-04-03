@@ -5,8 +5,8 @@ module Transaction
       @car = attributes[:car]
       @distance = attributes[:rental][:distance]
       @options = attributes[:options]
-      @period = Calculator::PeriodCalculator.number_of_days(attributes[:rental][:start_date], attributes[:rental][:end_date])
-      @price = Calculator::PriceCalculator.compute_basic_with_discount(@period, @car.daily_rate, @distance, @car.km_rate)
+      @period = calculator.number_of_days(attributes[:rental][:start_date], attributes[:rental][:end_date])
+      @price = calculator.compute_basic_with_discount(@period, @car.daily_rate, @distance, @car.km_rate)
       @commission = Transaction::CommissionTransaction.create(period: @period, price: @price, options: @options)
       @actions = create_actions
     end
@@ -29,6 +29,10 @@ module Transaction
           amount: @commission[item[:who].to_sym]
         )
       end
+    end
+
+    def calculator
+      Calculator::DrivyCalculator.new
     end
   end
 end
